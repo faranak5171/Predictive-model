@@ -1,22 +1,22 @@
 #Lambda is a small anonymous function in Python. It doesn't need a name.
 #syntax: lambda arguments : expression
+
 # A lambda function can have any number of parameters, but only one expression.
 #This ability of lambdas to be invoked immediately allows you to use them inside functions like map(), filter() and reduce()
 
 #lambda in filter(): select some particular elements from a sequence of elements.
 import numpy as np
 import functools
-
-
 list1 = np.arange(3,11)
 print(list1)
-
 evenlst = list(filter(lambda x : (x%2 == 0), list1))
 print(evenlst)
+
 
 #lambda in map(): apply a particular operation to every element in a sequence
 maplst = list(map(lambda x : x + 5 , list1))
 print(maplst)
+
 
 #lambda in reduce() : apply an operation to every element in a sequence. However, it differs from the map in its working.
 reducelst = functools.reduce(lambda x,y : x*y , list1)
