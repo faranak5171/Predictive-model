@@ -1,0 +1,45 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import sklearn.metrics as metrics
+
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Samples
+x = np.array([10,20,30,40,50,60,70,80,90,100])
+y = np.array([18,41,61,79,70,120,141,150,120,200])
+
+x = x.reshape(-1,1)
+y = y.reshape(-1,1)
+df = pd.DataFrame(x, columns=['x'])
+df['y'] = y
+print("Sample data frame is\n ", df)
+
+
+########################  Spilit dataframe to random train and test samples ########################  
+# Random_state : to prevent spilit from reproducing random values for each function's call
+trainx, testx, trainy, testy = train_test_split(x , y, test_size=0.3, random_state=42)
+
+
+
+########################  Draw a scatter plot ########################  
+plt.scatter(trainx, trainy, color='b')
+plt.scatter(testx, testy, color='r')
+plt.xlabel('x')
+plt.ylabel('y')
+
+########################  Create the model ###########################  
+model= LinearRegression()
+model.fit(trainx, trainy)
+print("For our sample data : \nThe intercept is", model.intercept_)
+print("The coefficent is", model.coef_)
+
+
+######################## Calculate Mean Square Error #################
+predic_y = model.predict(testx)
+calMSE = metrics.mean_squared_error(testy, predic_y)
+print("Mean square error is ", calMSE)
+
+######################## Draw model based on test data ###############
+plt.plot(testx, predic_y, color='black')
