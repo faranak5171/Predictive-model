@@ -1,0 +1,31 @@
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import sklearn.metrics as met
+
+##################### Load Boston Dataset ##########################
+boston = load_boston()
+x = boston.data #boston's data includes 506 rows and 13 columns
+y = boston.target #boston's target includes 506 rows and 1 column
+df = pd.DataFrame(x, columns = boston.feature_names)
+df['price'] = y
+
+##################### Spilit Boston Dataset ##########################
+trainx, testx, trainy, testy = train_test_split(x, y, test_size=0.3, random_state=42)
+
+
+##################### Create model ##########################
+model= LinearRegression()
+model.fit(trainx, trainy)
+predic_y = model.predict(testx)
+
+##################### Show samples and targets on plots ##########################
+plt.scatter(testy, predic_y, color='blue')
+plt.xlabel('prices')
+plt.ylabel('predicted prices')
+
+print(met.mean_squared_error(testy, predic_y))
