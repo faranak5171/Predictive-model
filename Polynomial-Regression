@@ -1,0 +1,33 @@
+'''
+    Polynomial Regression
+        1- First order polynomial
+            y = ax + b
+        2- Second order polynomial
+            y = ax**2 + bx +c
+        3- Third order polynomial
+            y = ax**3 + bx**2 + cx + d
+        4- High orders produce more complex curves
+
+    Beware overfitting
+        Don't use more degrees than you need
+        Visualize your data first to see how complex of a curve there night be
+        A high r-squared simply means your curve fits your training data well, but it may not be a good predictor.
+'''
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+np.random.seed(2)
+pageSpeed = np.random.normal(3.0, 1.0, 1000)
+purchaseAmount = np.random.normal(50.0, 10.0, 1000) / pageSpeed
+plt.scatter(pageSpeed, purchaseAmount)
+
+# polyfit function construct an nth-degree polynomial model that minimize the squared error
+curve = np.polyfit(pageSpeed, purchaseAmount, 4)
+poly1D = np.poly1d(curve)
+
+# Generate some predicted values using the polynomial function (poly1D) ranging from 0 to 7 minutes
+xp = np.linspace(0, 7, 100)
+plt.plot(xp, poly1D(xp), c='r')
+plt.show()
