@@ -1,0 +1,49 @@
+'''
+    Linear Regression 
+        means fit a line to a data set of observations, and use this line to predict unobserved valuess.
+        In other words, Linear regression is called maximum likelihood estimation (maximizing the likelihood of the observed data)
+        
+    Different ways to do it:
+        1- Least squares
+                Linear Regression usually uses 'Least squares'
+                Least square minimizes the sum of squared error from each point to the line.
+                usually a good choice 
+        2- Gradient Descent
+                Bascically iterates to find the line that best follows the contours defined by the data.
+                Easy to try in python
+    
+    How good is the regression?
+        measuring error with r-squared (coefficient of determination)
+        R-squared measures the fraction of the total variation in Y that is predicted by model
+        
+    Computing r-squared
+        1.0 - (sum of squared errors) / (sum of squared variation from mean)
+    
+    Interpreting r-squared
+        0 is terrible
+        1 is perfect
+        
+'''
+
+from numpy import random
+import matplotlib.pyplot as plt
+from scipy import stats
+
+
+pageSpeeds = random.normal(3.0, 1.0, 1000)
+# made purchase amount a lineer function of pageSpeed (pageSpeed plus normal random distribution around it, times 3)
+purchaseAmount = 100 - (pageSpeeds +  random.normal(0, 0.1, 1000)) * 3
+
+# The scatter shows a linear relationship between page speed and purchase amount
+plt.scatter(pageSpeeds, purchaseAmount)
+
+# Now finding the best fit line, using ordinary least squared
+slope, intercept, r_squared, p_value, std_err = stats.linregress(pageSpeeds, purchaseAmount)
+print("R_squared value shows ", r_squared, "which is a good fit")
+
+def predict(x):
+    return slope * x + intercept
+
+func_fitline = predict(pageSpeeds)
+plt.plot(pageSpeeds, func_fitline, c='r')
+plt.show()
