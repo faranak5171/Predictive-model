@@ -56,5 +56,9 @@ X[['Mileage', 'Cylinder', 'Doors']] =  scale.fit_transform(X[['Mileage', 'Cylind
 
 est = sm.OLS(y, X).fit()
 print(est.summary())
-
 # The magnitude of these coefficients tells you that the number of cylinder is the most important feature
+
+# Make an actual prediction
+scaled = scale.transform([[45000, 8, 4]])
+predicted = est.predict(scaled[0])
+print("Predicted price for the test data is :", predicted)
