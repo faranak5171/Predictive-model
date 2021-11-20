@@ -1,0 +1,60 @@
+'''
+    Multiple Regression
+        takes more than one variable or feature into account.
+        uses multiple features to predict a single value.
+        multivariate regression means having multiple features and predict more than one thing at the same time.
+        
+    How does it work?
+        use coefficient for each factors.
+        these coefficients imply how important each factor is.
+        Get rid of ones that don't matter! (That's called feature selection)
+        Need to assume that the different factors are not themselves dependent on each other.
+        can stil measure fit with r-squared.
+'''
+
+
+
+import pandas as pd
+import os
+import numpy as np
+import statsmodels.api as sm
+from sklearn.preprocessing import StandardScaler
+
+# Load data
+df = pd.read_excel(os.getcwd()+"\cars.xls")
+df1 = df[['Mileage','Price']]
+
+# Group Mileage based on their values
+bins1 = np.arange(0, 50000, 10000) # Create 5 categories
+category_Mileage = pd.cut(df1['Mileage'], bins1)
+groups = df1.groupby(category_Mileage).mean()
+#pandas.DataFrame.plot.line() ---> Plot series or dataframe as lines
+groups['Price'].plot.line() # More mileage means lower sale price
+
+
+
+
+
+# Now we have a bunch of feature vectors (X) to be used in predicting the value of price (y)
+X = df[['Mileage', 'Cylinder', 'Doors']]
+y = df['Price']
+
+
+'''
+    When our data has different values, or even different measurement units, it can be difficult to compare.
+    Therefore, we can scale data into new values that are easier to compare.
+    The standardization method scales data, uses this formula: (X - mean) / standard deviation
+    StandardScaler() returns a Scaler object with methods for transforming data sets.
+'''
+
+
+scale = StandardScaler()
+X[['Mileage', 'Cylinder', 'Doors']] =  scale.fit_transform(X[['Mileage', 'Cylinder', 'Doors']])
+
+
+# Estimation by ordinary least squares - OLS (ordinary least squares)
+
+est = sm.OLS(y, X).fit()
+print(est.summary())
+
+# The magnitude of these coefficients tells you that the number of cylinder is the most important feature
